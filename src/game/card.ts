@@ -1,4 +1,4 @@
-export type CardValue = Record<string, number>;
+import { CardValue } from "../types.js";
 
 class Card {
 

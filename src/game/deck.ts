@@ -1,4 +1,6 @@
 import Card from "./card.js";
+import { CardValue } from "../types.js";
+
 
 class Deck {
     private cards: Card[];
@@ -10,11 +12,27 @@ class Deck {
 
     private initializeDeck(): void{
         const suits: string[] = ['♠', '♥', '♦', '♣'];
-        const values: string[] = ['As', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'R'];
+        const values: CardValue = {
+            'As': 1,
+            '2': 2,
+            '3': 3,
+            '4': 4, 
+            '5': 5, 
+            '6': 6, 
+            '7': 7, 
+            '8': 8, 
+            '9': 9, 
+            '10': 0, 
+            'J': 0, 
+            'Q': 0, 
+            'R': 0
+        };
 
         for(const suit of suits){
-            for(const value of values){
-                const card = new Card(value, suit);
+            for (const [key, value] of Object.entries(values)) {
+                const cardValue: CardValue = {};
+                cardValue[key] = value;
+                const card = new Card(cardValue, suit);
                 this.cards.push(card);
             }
         }
