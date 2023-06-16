@@ -1,20 +1,17 @@
+import { CardValue } from "../types.js";
+
 class Card {
-    private face: string;
-    private value: number;
+
+    private value: CardValue;
     private suit: string;
 
-    constructor(face: string, value: number, suit: string) {
-        this.face = face;
+    constructor(value: CardValue, suit: string) {
         this.value = value;
         this.suit = suit;
     }
 
-    public getValue(): number {
+    public getValue(): CardValue {
         return this.value;
-    }
-
-    public getFace(): string {
-        return this.face;
     }
 
     public getSuit(): string {
