@@ -20,5 +20,16 @@ class Deck {
             [this.cards[currentIndex], this.cards[randomIndex]] = [this.cards[randomIndex], this.cards[currentIndex]];
         }
     }
+    dealCard() {
+        if (this.cards.length !== 0) {
+            const card = this.cards.splice(0, 1)[0];
+            /*debug*/ console.log("card:", card);
+            return card;
+        }
+        else {
+            /*debug*/ console.log("Deck's empty.");
+            return null;
+        }
+    }
 }
 export default Deck;
