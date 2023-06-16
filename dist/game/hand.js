@@ -6,7 +6,7 @@ class Hand {
         if (card && this.cards.length < 3)
             this.cards.push(card);
         else
-            console.log('Aucune ');
+            console.log('No card or hand full');
     }
     getCards() {
         return this.cards;
