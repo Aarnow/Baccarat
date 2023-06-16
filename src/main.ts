@@ -1,9 +1,10 @@
-import { deck } from "./game/app.js";
+// Imports
+// EXMEPLE: import { deck } from "./game/app.js";
 
-//HTML Elements
-const dealCardButton = document.getElementById("btn-dealCard");
+// HTML Elements
+// EXEMPLE: const dealCardButton = document.getElementById("btn-dealCard");
 
-//Events handler
+// Events handler
 
-//Initialisation
-dealCardButton?.addEventListener("click", () => deck.dealCard());
+// Initialisation
+// EXEMPLE: dealCardButton?.addEventListener("click", () => deck.dealCard());

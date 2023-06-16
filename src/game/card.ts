@@ -10,8 +10,8 @@ class Card {
         this.suit = suit;
     }
 
-    public getValue(): CardValue {
-        return this.value;
+    public getValue(): number {
+        return Object.values(this.value)[0];
     }
 
     public getSuit(): string {

@@ -38,6 +38,10 @@ class Deck {
         }
     }
 
+    public isDeckEmpty(): boolean {
+        return this.cards.length === 0;
+    }
+
     public shuffle(): void{
         for (let currentIndex: number = this.cards.length - 1; currentIndex > 0; currentIndex--) {
             const randomIndex: number = Math.floor(Math.random() * (currentIndex + 1));
@@ -46,14 +50,7 @@ class Deck {
     }
 
     public dealCard(): Card | null{
-        if(this.cards.length !== 0){
-            const card: Card =  this.cards.splice(0, 1)[0];
-            /*debug*/ console.log("card:", card);
-            return card;
-        } else {
-            /*debug*/ console.log("Deck's empty.")
-            return null
-        }
+        return !this.isDeckEmpty() ? this.cards.splice(0, 1)[0] : null;
     }
 }
 
