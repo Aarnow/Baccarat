@@ -30,6 +30,9 @@ class Deck {
             }
         }
     }
+    isDeckEmpty() {
+        return this.cards.length === 0;
+    }
     shuffle() {
         for (let currentIndex = this.cards.length - 1; currentIndex > 0; currentIndex--) {
             const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
@@ -37,15 +40,7 @@ class Deck {
         }
     }
     dealCard() {
-        if (this.cards.length !== 0) {
-            const card = this.cards.splice(0, 1)[0];
-            /*debug*/ console.log("card:", card);
-            return card;
-        }
-        else {
-            /*debug*/ console.log("Deck's empty.");
-            return null;
-        }
+        return !this.isDeckEmpty() ? this.cards.splice(0, 1)[0] : null;
     }
 }
 export default Deck;
