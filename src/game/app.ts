@@ -1,8 +1,4 @@
-const worldByDefault:string = "baccara";
+import Deck from "./deck.js"
 
-const sayWorld = (world:string = worldByDefault): string => {
-    console.log("world:", world)
-    return world
-}
-
-export default sayWorld;
+let deck = new Deck();
+deck.shuffle();

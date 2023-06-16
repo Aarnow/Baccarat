@@ -1,6 +1,5 @@
-const worldByDefault = "baccara";
-const sayWorld = (world = worldByDefault) => {
-    console.log("world:", world);
-    return world;
-};
-export default sayWorld;
+import Deck from "./deck.js";
+console.log("app");
+let deck = new Deck();
+deck.shuffle();
+console.log("deck", deck);
