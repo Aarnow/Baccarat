@@ -1,4 +1,4 @@
-export class Card {
+class Card {
     constructor(value, suit) {
         this.value = value;
         this.suit = suit;
@@ -10,3 +10,4 @@ export class Card {
         return this.suit;
     }
 }
+export default Card;
