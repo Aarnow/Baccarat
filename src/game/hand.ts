@@ -10,7 +10,7 @@ class Hand {
 
     public addCard(card: Card | null): void{
         if(card && this.cards.length < 3) this.cards.push(card);
-        else console.log('Aucune ')
+        else console.log('No card or hand full')
     }
 
     public getCards(): CardTuple{
