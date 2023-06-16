@@ -1,4 +1,4 @@
-export class Card {
+class Card {
     private value: string;
     private suit: string;
 
@@ -15,3 +15,5 @@ export class Card {
         return this.suit;
     }
 }
+
+export default Card;
