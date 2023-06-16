@@ -1,6 +1,7 @@
 export type CardValue = Record<string, number>;
 
 class Card {
+
     private value: CardValue;
     private suit: string;
 
