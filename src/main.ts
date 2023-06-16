@@ -1,3 +1,9 @@
-import sayWorld from './game/app.js';
+import { deck } from "./game/app.js";
 
-document.getElementById("start")?.addEventListener("click", () => sayWorld("MORGAN"))
+//HTML Elements
+const dealCardButton = document.getElementById("btn-dealCard");
+
+//Events handler
+
+//Initialisation
+dealCardButton?.addEventListener("click", () => deck.dealCard());
