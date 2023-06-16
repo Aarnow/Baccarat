@@ -1,14 +1,20 @@
 class Card {
-    private value: string;
+    private face: string;
+    private value: number;
     private suit: string;
 
-    constructor(value: string, suit: string) {
+    constructor(face: string, value: number, suit: string) {
+        this.face = face;
         this.value = value;
         this.suit = suit;
     }
 
-    public getValue(): string {
+    public getValue(): number {
         return this.value;
+    }
+
+    public getFace(): string {
+        return this.face;
     }
 
     public getSuit(): string {
