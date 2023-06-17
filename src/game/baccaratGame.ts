@@ -10,21 +10,58 @@
  * @version : 0.01
  * */
 
-import Player from "./player.js"
+import { BaccaratTable } from "../types.js";
+import Player from "./player.js";
 import Deck from "./deck.js"
 import Hand from "./hand.js"
 
 class BaccaratGame {
-    private puntos: Player[];
-    private deck: Deck;
-    private playerHand: Hand;
-    private bankerHand: Hand;
+    public puntos: BaccaratTable;
+    public deck: Deck;
+    public player: Hand;
+    public banker: Hand;
 
-    constructor(puntos: Player[], deck: Deck, playerHand: Hand, bankerHand: Hand){
+    constructor(){
         this.puntos = [];
         this.deck = new Deck();
-        this.playerHand = new Hand();
-        this.bankerHand = new Hand();
+        this.player = new Hand();
+        this.banker = new Hand();
+    }
+
+    //add player
+    public addPlayer(name: string, seatNumber: number): void {
+        let newPlayer : Player = new Player(name);
+        if(this.puntos.length < 4) this.puntos.splice(seatNumber, 0, newPlayer);
+    }
+
+    //remove player
+    public removePlayer(seatNumber: number): void {
+        this.puntos[seatNumber] = undefined;
+    }
+
+    //setHands
+    public draw(): void {
+        for (let i = 0; i < 2; i++) {
+            this.player.addCard(this.deck.dealCard());
+            this.banker.addCard(this.deck.dealCard());
+        }
+    }
+
+    //getWinner
+    //startRound
+    //placeBet
+    public placeBets(bets : number[]): void{
+        for (const [index, player] of this.puntos.entries()) {
+            if(player) player.setBet(bets[index]);
+        }
+    }
+
+    //payoutBets
+    public payoutBets(): void{
+        for (const player of this.puntos) {
+            if(player) player.getBet();
+            //win ?
+        }
     }
 }
 

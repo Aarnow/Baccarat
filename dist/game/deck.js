@@ -1,3 +1,12 @@
+/**
+ * Class Deck
+ *
+ * Cette classe représente le modèle d'un deck.
+ * Elle fournit des opérations pour manipuler :
+ *      - les cartes
+ *
+ * @version : 0.01
+ * */
 import Card from "./card.js";
 class Deck {
     constructor() {
@@ -29,6 +38,9 @@ class Deck {
                 this.cards.push(card);
             }
         }
+    }
+    getDeckSize() {
+        return this.cards.length;
     }
     isDeckEmpty() {
         return this.cards.length === 0;
