@@ -1,3 +1,15 @@
+/**
+ * Class Player
+ *
+ * Cette classe représente le modèle d'un joueur.
+ * Elle fournit des opérations pour manipuler :
+ *      - le pari
+ *      - le choix
+ *      - les stats
+ *
+ * @version : 0.01
+ * */
+
 import { BetOption, PlayerStatistics } from "../types.js"
 
 class Player {

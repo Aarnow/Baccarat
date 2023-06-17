@@ -1,7 +1,15 @@
+/**
+ * Class Deck
+ *
+ * Cette classe représente le modèle d'un deck.
+ * Elle fournit des opérations pour manipuler :
+ *      - les cartes
+ *
+ * @version : 0.01
+ * */
+
 import Card from "./card.js";
 import { CardValue } from "../types.js";
-
-
 class Deck {
     private cards: Card[];
 

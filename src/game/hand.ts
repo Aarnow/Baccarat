@@ -1,3 +1,14 @@
+/**
+ * Class Hand
+ *
+ * Cette classe représente le modèle de la main d'un joueur.
+ * Elle fournit des opérations pour manipuler :
+ *      - les cartes
+ *      - sur la valeur
+ *
+ * @version : 0.01
+ * */
+
 import Card from "./card.js"
 import { CardTuple } from "../types.js"
 

@@ -3,7 +3,9 @@
  *
  * Cette classe représente le modèle d'une partie de Baccarat.
  * Elle fournit des opérations pour manipuler :
- *      - des joueurs, leur paris, et leurs gains/pertes.
+ *      - des joueurs
+ *      - le deck
+ *      - leurs mains.
  *
  * @version : 0.01
  * */
