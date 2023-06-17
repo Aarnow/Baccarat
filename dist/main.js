@@ -7,22 +7,36 @@
 // EXEMPLE: dealCardButton?.addEventListener("click", () => deck.dealCard());
 //-----------------------------------------------------debug
 import BaccaratGame from "./game/baccaratGame.js";
+import Player from "./game/player.js";
+import { BetOption } from "./types.js";
 //init game
 const game = new BaccaratGame();
-//table
-console.log("add");
-game.addPlayer("bob", 2);
-console.log("add");
-game.addPlayer("John", 3);
-console.log("add");
-game.addPlayer("Marcel", 2);
-console.log("add");
-game.addPlayer("Veronique", 0);
-game.removePlayer(0);
+//new player
+let p1 = new Player("bob");
+let p2 = new Player("John");
+//join table
+game.addPlayer(p1, 2);
+game.addPlayer(p2, 1);
+//bet
+p1.setOption(BetOption.Player);
+p2.setOption(BetOption.Tie);
+const bet = {
+    amount: 0,
+    option: BetOption.Tie
+};
+game.placeBets([
+    { amount: 0,
+        option: null },
+    { amount: 50,
+        option: BetOption.Banker },
+    { amount: 20,
+        option: BetOption.Tie },
+    { amount: 0,
+        option: null }
+]);
 //draw
 game.draw();
 console.log("banker", game.banker);
 console.log("player", game.player);
-console.log("deck", game.deck.getDeckSize());
-game.placeBets([0, 50, 20, 0]);
-console.log("table", game.puntos);
+//payment
+game.payoutBets();

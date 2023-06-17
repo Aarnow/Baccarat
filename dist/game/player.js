@@ -33,6 +33,9 @@ class Player {
     setOption(option) {
         this.option = option;
     }
+    getOption() {
+        return this.option;
+    }
     resetBet() {
         this.bet = 0;
     }

@@ -22,3 +22,8 @@ export interface PlayerStatistics {
     winningPercentage: number;
     earning: number;
 }
+
+export interface Bet {
+    amount: number,
+    option: BetOption | null
+}
