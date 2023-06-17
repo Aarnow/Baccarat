@@ -32,3 +32,25 @@ console.log("deck", game.deck.getDeckSize());
 game.placeBets([0, 50, 20, 0]);
 
 console.log("table", game.puntos)
+
+
+
+// BetOption Event Listener
+const betOptions = document.querySelectorAll('.player-bet-option');
+betOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+        let containerPlayer = option.closest('.container-player');
+
+        if(containerPlayer) {
+            let siblingOptions = containerPlayer.querySelectorAll('.player-bet-option');
+
+            siblingOptions.forEach((siblingOption) => {
+                siblingOption.classList.remove('active');
+                siblingOption.classList.add('unactive');
+            });
+
+            option.classList.add('active');
+            option.classList.remove('unactive');
+        }
+    });
+});

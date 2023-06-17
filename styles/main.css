@@ -2,3 +2,72 @@
     margin: 0;
     padding: 0;
 }
+:root {
+    --height-game: 1050px;
+    --background-table: #609966;
+    --background-player: #C4DFDF;
+}
+body {
+    background-color: var(--background-table);
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Game Container */
+.container-game {
+    display: flex;
+    flex-flow: row wrap;
+    min-height: var(--height-game);
+}
+
+.container-game .container-table {
+    display: flex;
+    flex: 1 1 75%;
+    flex-flow: row wrap;
+}
+
+/* Players Container */
+.container-game .container-players {
+    display: flex;
+    flex: 1 1 23%;
+    margin-right: 1%;
+    margin-left: 1%;
+    flex-flow: column wrap;
+    justify-content: space-evenly;
+}
+
+.container-game .container-players .container-player {
+    display: flex;
+    flex-flow: row wrap;
+    flex-basis: 23%;
+    background-color: var(--background-player);
+    box-shadow: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4);
+    border-radius: 0.375rem !important;
+}
+
+.container-game .container-players .container-player .container-player-bet-option {
+    display: flex;
+    flex-basis: 100%;
+    flex-flow: row wrap;
+    justify-content: center;
+    height: 20%;
+    border-radius: 0.375rem !important;
+}
+.container-game .container-players .container-player .container-player-bet-option .player-bet-option{
+    transition: all 0.3s ease;
+    display: flex;
+    flex: 1 1 32%;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+.container-game .container-players .container-player .container-player-bet-option .player-bet-option:hover{
+    background-color: gray;
+}
+.container-game .container-players .container-player .container-player-bet-option .active{
+    background-color: blue;
+    border-radius: 0.375rem !important;
+}
+
