@@ -10,11 +10,15 @@ import BaccaratGame from "./game/baccaratGame.js";
 //init game
 const game = new BaccaratGame();
 //table
-game.addPlayer("bob", 1);
-game.addPlayer("John", 0);
-game.addPlayer("Marcel", 3);
-game.addPlayer("Antonio", 2);
-game.addPlayer("Veronique", 3);
+console.log("add");
+game.addPlayer("bob", 2);
+console.log("add");
+game.addPlayer("John", 3);
+console.log("add");
+game.addPlayer("Marcel", 2);
+console.log("add");
+game.addPlayer("Veronique", 0);
+game.removePlayer(0);
 //draw
 game.draw();
 console.log("banker", game.banker);

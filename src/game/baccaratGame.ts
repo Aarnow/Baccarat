@@ -31,12 +31,16 @@ class BaccaratGame {
     //add player
     public addPlayer(name: string, seatNumber: number): void {
         let newPlayer : Player = new Player(name);
-        if(this.puntos.length < 4) this.puntos.splice(seatNumber, 0, newPlayer);
+        if(seatNumber <= 3 && seatNumber >= 0){
+            if(!this.puntos[seatNumber]) this.puntos[seatNumber] = newPlayer;
+            else console.log('Ce siège est occupé.')
+        }
+        else console.log("La table est complète.")
     }
 
     //remove player
     public removePlayer(seatNumber: number): void {
-        this.puntos[seatNumber] = undefined;
+        this.puntos.splice(seatNumber, 1);
     }
 
     //setHands
@@ -48,7 +52,9 @@ class BaccaratGame {
     }
 
     //getWinner
+
     //startRound
+
     //placeBet
     public placeBets(bets : number[]): void{
         for (const [index, player] of this.puntos.entries()) {
