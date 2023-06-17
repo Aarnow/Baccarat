@@ -1,9 +1,11 @@
 import Card from "./game/card.js"
+import Player from "./game/player.js";
 
 
 // Types
 export type CardValue = Record<string, number>;
 export type CardTuple = [Card?, Card?, Card?];
+export type BaccaratTable = [Player?, Player?, Player?, Player?];
 
 
 // Enums

@@ -13,18 +13,33 @@
 import { BetOption, PlayerStatistics } from "../types.js"
 
 class Player {
+    private name: string;
     private bet: number;
-    private option: BetOption;
+    private option: BetOption | null;
     private statistics: PlayerStatistics;
 
-    constructor(bet: number, option: BetOption, statistics: PlayerStatistics){
-        this.bet = bet;
-        this.option = option;
-        this.statistics = statistics;
+    constructor(name: string, statistics?: PlayerStatistics){
+        this.name = name;
+        this.bet = 0;
+        this.option = null;
+        this.statistics = statistics ? statistics : this.initializePlayerStatistics()
+    }
+
+    private initializePlayerStatistics(): PlayerStatistics{
+        return {
+            wins: 0,
+            losses: 0,
+            winningPercentage: 0,
+            earning: 0
+        }
     }
 
     public setBet(bet: number): void {
         this.bet = bet;
+    }
+
+    public getBet(): number{
+        return this.bet;
     }
 
     public setOption(option: BetOption): void {

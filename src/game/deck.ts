@@ -46,6 +46,10 @@ class Deck {
         }
     }
 
+    public getDeckSize(): number{
+        return this.cards.length;
+    }
+
     public isDeckEmpty(): boolean {
         return this.cards.length === 0;
     }
