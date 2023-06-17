@@ -10,7 +10,7 @@
  * @version : 0.01
  * */
 
-import { BaccaratTable } from "../types.js";
+import { BaccaratTable, BetOption, Bet } from "../types.js";
 import Player from "./player.js";
 import Deck from "./deck.js"
 import Hand from "./hand.js"
@@ -20,23 +20,28 @@ class BaccaratGame {
     public deck: Deck;
     public player: Hand;
     public banker: Hand;
+    public bankroll: number;
 
     constructor(){
         this.puntos = [];
         this.deck = new Deck();
         this.player = new Hand();
         this.banker = new Hand();
+        this.bankroll = 0;
     }
 
     //add player
-    public addPlayer(name: string, seatNumber: number): void {
-        let newPlayer : Player = new Player(name);
-        if(this.puntos.length < 4) this.puntos.splice(seatNumber, 0, newPlayer);
+    public addPlayer(player: Player, seatNumber: number): void {
+        if(seatNumber <= 3 && seatNumber >= 0){
+            if(!this.puntos[seatNumber]) this.puntos[seatNumber] = player;
+            else console.log('Ce siège est occupé.')
+        }
+        else console.log("La table est complète.")
     }
 
     //remove player
     public removePlayer(seatNumber: number): void {
-        this.puntos[seatNumber] = undefined;
+        this.puntos.splice(seatNumber, 1);
     }
 
     //setHands
@@ -48,20 +53,55 @@ class BaccaratGame {
     }
 
     //getWinner
+    public getWinner(): BetOption {
+        const playerScore = this.player.getTotalValue();
+        const bankerScore = this.banker.getTotalValue();
+
+        if (playerScore > bankerScore) {
+            return BetOption.Player;
+        } else if (playerScore < bankerScore) {
+            return BetOption.Banker;
+        } else {
+            return BetOption.Tie;
+        }
+    }
+
     //startRound
+
     //placeBet
-    public placeBets(bets : number[]): void{
+    public placeBets(bets : Bet[]): void{
         for (const [index, player] of this.puntos.entries()) {
-            if(player) player.setBet(bets[index]);
+            if(player){
+                const option = bets[index].option
+                if(option) player.setOption(option);
+                player.setBet(bets[index].amount);
+            }
         }
     }
 
     //payoutBets
     public payoutBets(): void{
         for (const player of this.puntos) {
-            if(player) player.getBet();
-            //win ?
+            if(player){
+                if(this.isBetWon(player)){
+                    //récompenser le joueur
+                } else {
+                    //augmenter bankroll avec le bet du joueur
+                    // réinitialiser le bet du joueur
+                    // update les statistiques du joueur
+                    this.bankroll += player.getBet();
+                    player.setStatistics(false);
+                    player.resetBet();
+                }
+            }
         }
+    }
+
+    //player win ?
+    public isBetWon(player: Player): boolean {
+        const result = this.getWinner();
+        const playerOption = player.getOption();
+        return playerOption === result ? true : false;
     }
 }
 
