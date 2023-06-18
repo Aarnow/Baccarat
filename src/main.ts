@@ -49,3 +49,4 @@ game.isNatural();
 
 //payment
 game.payoutBets();
+
