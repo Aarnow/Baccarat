@@ -20,19 +20,20 @@ const game = new BaccaratGame();
 //new player
 let p1 = new Player("bob");
 let p2 = new Player("John");
+let p3 = new Player("Natoo");
+
 
 //join table
+game.addPlayer(p3, 0);
 game.addPlayer(p1, 2);
 game.addPlayer(p2, 1);
 
 //bet
-p1.setOption(BetOption.Player);
-p2.setOption(BetOption.Tie);
 
 game.placeBets(
     [
-        {amount: 0,
-        option: null},
+        {amount: 10,
+        option: BetOption.Banker},
         {amount: 50,
         option: BetOption.Banker},
         {amount: 20,
@@ -42,11 +43,29 @@ game.placeBets(
     ]
 );
 
+console.log("la table vient de parier: ", game.puntos)
+
 //draw
 game.draw();
 
+console.log("main du banquier: ",game.banker);
+console.log("main du joueur: ",game.player);
+
+//check third draw + result
 game.isNatural();
+
+console.log("main du banquier: ",game.banker);
+console.log("main du joueur: ",game.player);
+
+console.log("résultat: ",game.result);
 
 //payment
 game.payoutBets();
+console.log("cagnotte du casino: ", game.bankroll);
+console.log("statistics des joueurs à table: ", game.puntos)
+
+//remove players
+game.removePlayer(0);
+console.log("Natoo vient de quitter la table: ", game.puntos)
+
 

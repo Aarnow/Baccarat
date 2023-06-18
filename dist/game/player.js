@@ -25,10 +25,10 @@ class Player {
             earning: 0
         };
     }
-    setBet(bet) {
+    setAmount(bet) {
         this.amount = bet;
     }
-    getBet() {
+    getAmount() {
         return this.amount;
     }
     setOption(option) {
@@ -44,11 +44,15 @@ class Player {
     getStatistics() {
         return this.statistics;
     }
+    calcPayout() {
+        const commission = 0.9; //casino takes 10% on winning bets
+        return (this.option === BetOption.Tie ? this.getAmount() * 8 : this.getAmount() * 2) * commission;
+    }
     setStatistics(win) {
         let wins = win ? this.statistics.wins + 1 : this.statistics.wins;
         let losses = win ? this.statistics.losses : this.statistics.losses + 1;
         let winningPercentage = (wins / (wins + losses)) * 100;
-        let earning = win ? (this.statistics.earning + (this.option === BetOption.Tie ? this.getBet() * 8 : this.getBet() * 2)) : this.statistics.earning - this.getBet();
+        let earning = win ? (this.statistics.earning + this.calcPayout()) : this.statistics.earning - this.getAmount();
         this.statistics = {
             wins: wins,
             losses: losses,

@@ -10,11 +10,14 @@
  * */
 class Hand {
     constructor() {
+        this.score = 0;
         this.cards = [];
     }
     addCard(card) {
-        if (card && this.cards.length < 3)
+        if (card && this.cards.length < 3) {
             this.cards.push(card);
+            this.score = this.getTotalValue();
+        }
         else
             console.log('No card or hand full');
     }

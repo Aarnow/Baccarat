@@ -16,6 +16,7 @@ class Deck {
     constructor(){
         this.cards = [];
         this.initializeDeck();
+        this.shuffle();
     }
 
     private initializeDeck(): void{

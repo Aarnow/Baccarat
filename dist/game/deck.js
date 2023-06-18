@@ -12,6 +12,7 @@ class Deck {
     constructor() {
         this.cards = [];
         this.initializeDeck();
+        this.shuffle();
     }
     initializeDeck() {
         const suits = ['♠', '♥', '♦', '♣'];
