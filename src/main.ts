@@ -12,7 +12,7 @@
 //-----------------------------------------------------debug
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
-import { BetOption, Bet } from "./types.js";
+import { BetOption } from "./types.js";
 
 //init game
 const game = new BaccaratGame();
@@ -44,6 +44,8 @@ game.placeBets(
 
 //draw
 game.draw();
+
+game.isNatural();
 
 //payment
 game.payoutBets();

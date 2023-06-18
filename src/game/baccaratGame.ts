@@ -20,6 +20,7 @@ class BaccaratGame {
     public deck: Deck;
     public player: Hand;
     public banker: Hand;
+    public result: BetOption | null;
     public bankroll: number;
 
     constructor(){
@@ -27,6 +28,7 @@ class BaccaratGame {
         this.deck = new Deck();
         this.player = new Hand();
         this.banker = new Hand();
+        this.result = null;
         this.bankroll = 0;
     }
 
@@ -53,20 +55,17 @@ class BaccaratGame {
     }
 
     //getWinner
-    public getWinner(): BetOption {
-        const playerScore = this.player.getTotalValue();
-        const bankerScore = this.banker.getTotalValue();
-
-        if (playerScore > bankerScore) {
-            return BetOption.Player;
-        } else if (playerScore < bankerScore) {
-            return BetOption.Banker;
+    public setResult(): void {
+        if (this.player.score > this.banker.score) {
+            this.result = BetOption.Player;
+        } else if (this.player.score < this.banker.score) {
+            this.result = BetOption.Banker;
         } else {
-            return BetOption.Tie;
+            this.result = BetOption.Tie;
         }
-    }
 
-    //startRound
+        this.payoutBets();
+    }
 
     //placeBet
     public placeBets(bets : Bet[]): void{
@@ -84,24 +83,56 @@ class BaccaratGame {
         for (const player of this.puntos) {
             if(player){
                 if(this.isBetWon(player)){
-                    //récompenser le joueur
+                    this.bankroll -= player.calcPayout();
+                    player.setStatistics(true);
                 } else {
-                    //augmenter bankroll avec le bet du joueur
-                    // réinitialiser le bet du joueur
-                    // update les statistiques du joueur
                     this.bankroll += player.getBet();
                     player.setStatistics(false);
-                    player.resetBet();
                 }
+                player.resetBet();
             }
         }
     }
 
     //player win ?
     public isBetWon(player: Player): boolean {
-        const result = this.getWinner();
         const playerOption = player.getOption();
-        return playerOption === result ? true : false;
+        return playerOption === this.result ? true : false;
+    }
+
+    public isNatural(): void {
+        if(this.player.score >= 8 || this.banker.score >= 8){
+            this.setResult();
+        } else {
+            this.checkPlayerDraw()
+        }
+    }
+
+    public checkPlayerDraw(): void {
+        if(this.player.score <= 5){
+            this.player.addCard(this.deck.dealCard())
+            this.checkBankerDraw()
+        } else if(this.banker.score <= 5) {
+            this.banker.addCard(this.deck.dealCard())
+            this.setResult();
+        } else this.setResult();      
+    }
+
+    public checkBankerDraw(): void{
+        const thirdPlayerCard = this.player.getCards()[2]?.getValue();
+        
+        if(thirdPlayerCard){
+            if(this.banker.score <= 2 || this.banker.score === 3 && thirdPlayerCard !== 8){
+                this.banker.addCard(this.deck.dealCard())
+            } else if (thirdPlayerCard <= 7){
+                if ((this.banker.score === 4 && thirdPlayerCard >= 2) ||
+                    (this.banker.score === 5 && thirdPlayerCard >= 4) ||
+                    (this.banker.score === 6 && thirdPlayerCard >= 6)) 
+                    this.banker.addCard(this.deck.dealCard())
+            } 
+        }
+
+        this.setResult();
     }
 }
 

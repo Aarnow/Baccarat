@@ -20,10 +20,6 @@ game.addPlayer(p2, 1);
 //bet
 p1.setOption(BetOption.Player);
 p2.setOption(BetOption.Tie);
-const bet = {
-    amount: 0,
-    option: BetOption.Tie
-};
 game.placeBets([
     { amount: 0,
         option: null },
@@ -36,7 +32,5 @@ game.placeBets([
 ]);
 //draw
 game.draw();
-console.log("banker", game.banker);
-console.log("player", game.player);
 //payment
 game.payoutBets();

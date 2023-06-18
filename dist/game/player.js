@@ -9,10 +9,11 @@
  *
  * @version : 0.01
  * */
+import { BetOption } from "../types.js";
 class Player {
     constructor(name, statistics) {
         this.name = name;
-        this.bet = 0;
+        this.amount = 0;
         this.option = null;
         this.statistics = statistics ? statistics : this.initializePlayerStatistics();
     }
@@ -25,10 +26,10 @@ class Player {
         };
     }
     setBet(bet) {
-        this.bet = bet;
+        this.amount = bet;
     }
     getBet() {
-        return this.bet;
+        return this.amount;
     }
     setOption(option) {
         this.option = option;
@@ -37,7 +38,23 @@ class Player {
         return this.option;
     }
     resetBet() {
-        this.bet = 0;
+        this.amount = 0;
+        this.option = null;
+    }
+    getStatistics() {
+        return this.statistics;
+    }
+    setStatistics(win) {
+        let wins = win ? this.statistics.wins + 1 : this.statistics.wins;
+        let losses = win ? this.statistics.losses : this.statistics.losses + 1;
+        let winningPercentage = (wins / (wins + losses)) * 100;
+        let earning = win ? (this.statistics.earning + (this.option === BetOption.Tie ? this.getBet() * 8 : this.getBet() * 2)) : this.statistics.earning - this.getBet();
+        this.statistics = {
+            wins: wins,
+            losses: losses,
+            winningPercentage: winningPercentage,
+            earning: earning
+        };
     }
 }
 export default Player;

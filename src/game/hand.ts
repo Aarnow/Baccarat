@@ -14,14 +14,18 @@ import { CardTuple } from "../types.js"
 
 class Hand {
     private cards: CardTuple;
+    public score: number;
 
     constructor(){
+        this.score = 0;
         this.cards = [];
     }
 
     public addCard(card: Card | null): void{
-        if(card && this.cards.length < 3) this.cards.push(card);
-        else console.log('No card or hand full')
+        if(card && this.cards.length < 3){
+            this.cards.push(card)
+            this.score = this.getTotalValue();
+        } else console.log('No card or hand full')
     }
 
     public getCards(): CardTuple{
