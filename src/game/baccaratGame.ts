@@ -24,7 +24,7 @@ class BaccaratGame {
     public bankroll: number;
 
     constructor(){
-        this.puntos = [];
+        this.puntos = [undefined, undefined, undefined, undefined];
         this.deck = new Deck();
         this.player = new Hand();
         this.banker = new Hand();
@@ -32,7 +32,6 @@ class BaccaratGame {
         this.bankroll = 0;
     }
 
-    //add player
     public addPlayer(player: Player, seatNumber: number): void {
         if(seatNumber <= 3 && seatNumber >= 0){
             if(!this.puntos[seatNumber]) this.puntos[seatNumber] = player;
@@ -41,12 +40,10 @@ class BaccaratGame {
         else console.log("La table est complète.")
     }
 
-    //remove player
     public removePlayer(seatNumber: number): void {
-        this.puntos.splice(seatNumber, 1);
+        this.puntos[seatNumber] = undefined;
     }
 
-    //setHands
     public draw(): void {
         for (let i = 0; i < 2; i++) {
             this.player.addCard(this.deck.dealCard());
@@ -54,7 +51,10 @@ class BaccaratGame {
         }
     }
 
-    //getWinner
+    public getResult(): BetOption | null {
+        return this.result;
+    }
+
     public setResult(): void {
         if (this.player.score > this.banker.score) {
             this.result = BetOption.Player;
@@ -67,18 +67,16 @@ class BaccaratGame {
         this.payoutBets();
     }
 
-    //placeBet
     public placeBets(bets : Bet[]): void{
         for (const [index, player] of this.puntos.entries()) {
             if(player){
                 const option = bets[index].option
                 if(option) player.setOption(option);
-                player.setBet(bets[index].amount);
+                player.setAmount(bets[index].amount);
             }
         }
     }
 
-    //payoutBets
     public payoutBets(): void{
         for (const player of this.puntos) {
             if(player){
@@ -86,15 +84,14 @@ class BaccaratGame {
                     this.bankroll -= player.calcPayout();
                     player.setStatistics(true);
                 } else {
-                    this.bankroll += player.getBet();
+                    this.bankroll += player.getAmount();
                     player.setStatistics(false);
                 }
-                player.resetBet();
+                //player.resetBet();
             }
         }
     }
 
-    //player win ?
     public isBetWon(player: Player): boolean {
         const playerOption = player.getOption();
         return playerOption === this.result ? true : false;
