@@ -12,7 +12,7 @@
 //-----------------------------------------------------debug
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
-import { BetOption } from "./types.js";
+import { BetOption, Bet } from "./types.js";
 
 //init game
 const game = new BaccaratGame();
@@ -64,8 +64,49 @@ game.payoutBets();
 console.log("cagnotte du casino: ", game.bankroll);
 console.log("statistics des joueurs à table: ", game.puntos)
 
+
+// PlaceBet Event Listener
+const placeBet = document.getElementById('place-bet');
+placeBet.addEventListener('click', () => {
+    let bets: Bet[] = [];
+    const players = document.querySelectorAll('.container-player');
+
 //remove players
 game.removePlayer(0);
 console.log("Natoo vient de quitter la table: ", game.puntos)
+    players.forEach((player) => {
+        const betOption: BetOption = player?.querySelector('.active')?.querySelector('span').textContent as BetOption;
+        const betPlayer = parseInt(player?.querySelector('.player-bet')?.querySelector('input').value);
+        const newBet: Bet = {
+            amount : betPlayer,
+            option : betOption
+        }
 
 
+
+        bets.push(newBet);
+    });
+
+    game.placeBets(bets);
+    console.log(game)
+});
+
+// BetOption Event Listener
+const betOptions = document.querySelectorAll('.player-bet-option');
+betOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+        let containerPlayer = option.closest('.container-player');
+
+        if(containerPlayer) {
+            let siblingOptions = containerPlayer.querySelectorAll('.player-bet-option');
+
+            siblingOptions.forEach((siblingOption) => {
+                siblingOption.classList.remove('active');
+                siblingOption.classList.add('unactive');
+            });
+
+            option.classList.add('active');
+            option.classList.remove('unactive');
+        }
+    });
+});
