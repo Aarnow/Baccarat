@@ -19,29 +19,12 @@ const game = new BaccaratGame();
 
 //new player
 let p1 = new Player("bob");
-let p2 = new Player("John");
-let p3 = new Player("Natoo");
 
 
 //join table
-game.addPlayer(p3, 0);
 game.addPlayer(p1, 2);
-game.addPlayer(p2, 1);
 
 //bet
-
-game.placeBets(
-    [
-        {amount: 10,
-        option: BetOption.Banker},
-        {amount: 50,
-        option: BetOption.Banker},
-        {amount: 20,
-        option: BetOption.Tie},
-        {amount: 0,
-        option: null}
-    ]
-);
 
 console.log("la table vient de parier: ", game.puntos)
 
@@ -71,9 +54,7 @@ placeBet.addEventListener('click', () => {
     let bets: Bet[] = [];
     const players = document.querySelectorAll('.container-player');
 
-//remove players
-game.removePlayer(0);
-console.log("Natoo vient de quitter la table: ", game.puntos)
+    console.log("Natoo vient de quitter la table: ", game.puntos)
     players.forEach((player) => {
         const betOption: BetOption = player?.querySelector('.active')?.querySelector('span').textContent as BetOption;
         const betPlayer = parseInt(player?.querySelector('.player-bet')?.querySelector('input').value);
@@ -81,14 +62,9 @@ console.log("Natoo vient de quitter la table: ", game.puntos)
             amount : betPlayer,
             option : betOption
         }
-
-
-
         bets.push(newBet);
     });
-
     game.placeBets(bets);
-    console.log(game)
 });
 
 // BetOption Event Listener
@@ -107,6 +83,34 @@ betOptions.forEach((option) => {
 
             option.classList.add('active');
             option.classList.remove('unactive');
+        }
+    });
+});
+
+// RemovePlayer Event Listener
+const removePlayersBtn = document.querySelectorAll('.player-leave');
+removePlayersBtn.forEach((removePlayer) => {
+    removePlayer.addEventListener('click', () => {
+        let containerPlayer = removePlayer.closest('.container-player');
+
+        if(containerPlayer) {
+            game.removePlayer(parseInt(containerPlayer.getAttribute('data-player')));
+
+            // reset BetOptions
+            containerPlayer.querySelectorAll('.player-bet-option').forEach((betOption) => {
+                betOption.classList.remove('active');
+                betOption.classList.add('unactive');
+            });
+
+            containerPlayer.querySelector('.amount').textContent = "-";
+            containerPlayer.querySelector('.amount-total').textContent = "-";
+            containerPlayer.querySelector('.victory').textContent = "-";
+            containerPlayer.querySelector('.defeat').textContent = "-";
+            containerPlayer.querySelector('.percent').textContent = "- %";
+
+
+            //console.log(containerPlayer.querySelector('input-bet').value);
+
         }
     });
 });
