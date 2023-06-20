@@ -35,7 +35,7 @@ console.log("la table vient de parier: ", game.puntos);
 game.draw();
 console.log("main du banquier: ", game.banker);
 console.log("main du joueur: ", game.player);
-//check third draw + result
+//check third draw + result + 
 game.isNatural();
 console.log("main du banquier: ", game.banker);
 console.log("main du joueur: ", game.player);

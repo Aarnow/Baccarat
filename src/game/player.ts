@@ -71,12 +71,17 @@ class Player {
         let winningPercentage = (wins / (wins + losses)) * 100;
         let earning = win ? (this.statistics.earning + this.calcPayout()) : this.statistics.earning - this.getAmount();
 
-        this.statistics = {
+        console.log("player-----:", this.name)
+        console.log("wins", wins);
+        console.log("losses", losses);
+        console.log("earning", earning);
+
+        this.statistics = {...this.statistics, ...{
             wins: wins,
             losses: losses,
             winningPercentage: winningPercentage,
             earning: earning
-        };
+        }};
     }
 }
 

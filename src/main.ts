@@ -51,21 +51,18 @@ game.draw();
 console.log("main du banquier: ",game.banker);
 console.log("main du joueur: ",game.player);
 
-//check third draw + result
+//check third draw + result + 
 game.isNatural();
-
-console.log("main du banquier: ",game.banker);
-console.log("main du joueur: ",game.player);
-
-console.log("résultat: ",game.result);
-
-//payment
-game.payoutBets();
-console.log("cagnotte du casino: ", game.bankroll);
-console.log("statistics des joueurs à table: ", game.puntos)
 
 //remove players
 game.removePlayer(0);
-console.log("Natoo vient de quitter la table: ", game.puntos)
+
+//STEPS
+//init game 
+//tableManagement (init/add/remove players)
+//bets
+//draw + natural
+//result + payout
+
 
 

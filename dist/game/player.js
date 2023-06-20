@@ -53,12 +53,16 @@ class Player {
         let losses = win ? this.statistics.losses : this.statistics.losses + 1;
         let winningPercentage = (wins / (wins + losses)) * 100;
         let earning = win ? (this.statistics.earning + this.calcPayout()) : this.statistics.earning - this.getAmount();
-        this.statistics = {
+        console.log("player-----:", this.name);
+        console.log("wins", wins);
+        console.log("losses", losses);
+        console.log("earning", earning);
+        this.statistics = Object.assign(Object.assign({}, this.statistics), {
             wins: wins,
             losses: losses,
             winningPercentage: winningPercentage,
             earning: earning
-        };
+        });
     }
 }
 export default Player;
