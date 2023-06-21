@@ -14,6 +14,9 @@ body {
     background-color: var(--background-table);
     font-family: 'Montserrat', sans-serif;
 }
+.hide {
+    display: none!important;
+}
 
 /* Game Container */
 .container-game {
@@ -29,7 +32,7 @@ body {
     flex-flow: column wrap;
 }
 .container-game .container-table .table-line {
-    margin: 1%;
+    margin: 5px 100px 5px 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,10 +89,28 @@ body {
     box-shadow: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4);
     border-radius: 0.375rem !important;
 }
-.container-game .container-players .container-player .player-leave {
+.container-game .container-players .container-player-add {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-basis: 23%;
+    background-color: var(--background-player);
+    box-shadow: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4);
+    border-radius: 0.375rem !important;
+}
+.container-game .container-players .container-player-add .player-add,
+.container-game .container-players .container-player-add .player-name{
+    height: 40px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
+}
+.container-game .container-players .container-player .player-name,
+.container-game .container-players .container-player .player-leave{
     width: 75px;
     padding: 1%;
-    background-color: red;
+    background-color: yellow;
     position: absolute;
     right: 485px;
     top: 30px;
@@ -97,6 +118,11 @@ body {
     box-shadow: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4);
     border-radius: 0.375rem !important;
 }
+.container-game .container-players .container-player .player-leave {
+    background-color: red !important;
+    top: 70px !important;
+}
+
 .container-game .container-players .container-player .container-player-bet-option {
     display: flex;
     flex-basis: 100%;

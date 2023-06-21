@@ -10,13 +10,13 @@
 <body>
 <div class="container-game">
     <div class="container-table">
-        <div class="table-line"> Le banquier tire une troisième carte.</div>
         <ul class="container-game-manager">
             <li id="place-bet" class="game-manager"><span>Lancer la mise</span></li>
         </ul>
     </div>
     <div class="container-players">
-        <div class="container-player" data-player="0">
+        <div class="container-player hide" data-seat="0">
+            <span class="player-name"></span>
             <span class="player-leave">Quitter</span>
             <ul class="container-player-bet-option">
                 <li class="player-bet-option unactive"><span>Banker</span></li>
@@ -46,7 +46,12 @@
                 </li>
             </ul>
         </div>
-        <div class="container-player" data-player="1">
+        <div class="container-player-add" data-seat="0">
+            <input type="text" class="player-name" placeholder="Nom du joueur" value="">
+            <button class="player-add" type="button">Ajouter à la table</button>
+        </div>
+        <div class="container-player hide" data-seat="1">
+            <span class="player-name"></span>
             <span class="player-leave">Quitter</span>
             <ul class="container-player-bet-option">
                 <li class="player-bet-option unactive"><span>Banker</span></li>
@@ -76,7 +81,12 @@
                 </li>
             </ul>
         </div>
-        <div class="container-player" data-player="2">
+        <div class="container-player-add" data-seat="1">
+            <input type="text" class="player-name" placeholder="Nom du joueur" value="">
+            <button class="player-add" type="button">Ajouter à la table</button>
+        </div>
+        <div class="container-player hide" data-seat="2">
+            <span class="player-name"></span>
             <span class="player-leave">Quitter</span>
             <ul class="container-player-bet-option">
                 <li class="player-bet-option unactive"><span>Banker</span></li>
@@ -106,7 +116,12 @@
                 </li>
             </ul>
         </div>
-        <div class="container-player" data-player="3">
+        <div class="container-player-add" data-seat="2">
+            <input type="text" class="player-name" placeholder="Nom du joueur" value="">
+            <button class="player-add" type="button">Ajouter à la table</button>
+        </div>
+        <div class="container-player hide" data-seat="3">
+            <span class="player-name"></span>
             <span class="player-leave">Quitter</span>
             <ul class="container-player-bet-option">
                 <li class="player-bet-option unactive"><span>Banker</span></li>
@@ -135,6 +150,10 @@
                     <span class="statistic amount-total">-</span>
                 </li>
             </ul>
+        </div>
+        <div class="container-player-add" data-seat="3">
+            <input type="text" class="player-name" placeholder="Nom du joueur" value="">
+            <button class="player-add" type="button">Ajouter à la table</button>
         </div>
     </div>
 </div>
