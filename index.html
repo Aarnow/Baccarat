@@ -8,46 +8,134 @@
     <script src="./dist/main.js" type="module"></script>
 </head>
 <body>
-    <div class="container-game">
-        <div class="container-table">
-
-
+<div class="container-game">
+    <div class="container-table">
+        <ul class="container-game-manager">
+            <li id="place-bet" class="game-manager"><span>Lancer la mise</span></li>
+        </ul>
+    </div>
+    <div class="container-players">
+        <div class="container-player" data-player="0">
+            <span class="player-leave">Quitter</span>
+            <ul class="container-player-bet-option">
+                <li class="player-bet-option unactive"><span>Banker</span></li>
+                <li class="player-bet-option unactive"><span>Player</span></li>
+                <li class="player-bet-option unactive"><span>Tie</span></li>
+            </ul>
+            <ul class="container-player-bet">
+                <li class="player-bet"><input class="input-bet" title="pari" type="number" value=""></li>
+                <li class="player-bet"><span class="amount">45</span></li>
+            </ul>
+            <ul class="container-player-statistics">
+                <li class="player-statistic">
+                    <span class="statistic label">Victoire</span>
+                    <span class="statistic victory">1</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Défaite</span>
+                    <span class="statistic defeat">2</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">P% Victoire</span>
+                    <span class="statistic percent">48 %</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Gain total</span>
+                    <span class="statistic amount-total">1352</span>
+                </li>
+            </ul>
         </div>
-
-        <div class="container-players">
-            <div class="container-player" data-player="0">
-                <ul class="container-player-bet-option">
-                    <li class="player-bet-option unactive"><span>Banker</span></li>
-                    <li class="player-bet-option unactive"><span>Player</span></li>
-                    <li class="player-bet-option unactive"><span>Tie</span></li>
-                </ul>
-
-            </div>
-            <div class="container-player" data-player="0">
-                <ul class="container-player-bet-option">
-                    <li class="player-bet-option unactive"><span>Banker</span></li>
-                    <li class="player-bet-option unactive"><span>Player</span></li>
-                    <li class="player-bet-option unactive"><span>Tie</span></li>
-                </ul>
-            </div>
-
-            <div class="container-player" data-player="0">
-                <ul class="container-player-bet-option">
-                    <li class="player-bet-option unactive"><span>Banker</span></li>
-                    <li class="player-bet-option unactive"><span>Player</span></li>
-                    <li class="player-bet-option unactive"><span>Tie</span></li>
-                </ul>
-            </div>
-
-            <div class="container-player" data-player="0">
-                <ul class="container-player-bet-option">
-                    <li class="player-bet-option unactive"><span>Banker</span></li>
-                    <li class="player-bet-option unactive"><span>Player</span></li>
-                    <li class="player-bet-option unactive"><span>Tie</span></li>
-                </ul>
-            </div>
-
+        <div class="container-player" data-player="1">
+            <span class="player-leave">Quitter</span>
+            <ul class="container-player-bet-option">
+                <li class="player-bet-option unactive"><span>Banker</span></li>
+                <li class="player-bet-option unactive"><span>Player</span></li>
+                <li class="player-bet-option unactive"><span>Tie</span></li>
+            </ul>
+            <ul class="container-player-bet">
+                <li class="player-bet"><input class="input-bet" title="pari" type="number" value=""></li>
+                <li class="player-bet"><span class="amount">45</span></li>
+            </ul>
+            <ul class="container-player-statistics">
+                <li class="player-statistic">
+                    <span class="statistic label">Victoire</span>
+                    <span class="statistic victory">1</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Défaite</span>
+                    <span class="statistic defeat">2</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">P% Victoire</span>
+                    <span class="statistic percent">48 %</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Gain total</span>
+                    <span class="statistic amount-total">1352</span>
+                </li>
+            </ul>
+        </div>
+        <div class="container-player" data-player="2">
+            <span class="player-leave">Quitter</span>
+            <ul class="container-player-bet-option">
+                <li class="player-bet-option unactive"><span>Banker</span></li>
+                <li class="player-bet-option unactive"><span>Player</span></li>
+                <li class="player-bet-option unactive"><span>Tie</span></li>
+            </ul>
+            <ul class="container-player-bet">
+                <li class="player-bet"><input class="input-bet" title="pari" type="number" value=""></li>
+                <li class="player-bet"><span class="amount">45</span></li>
+            </ul>
+            <ul class="container-player-statistics">
+                <li class="player-statistic">
+                    <span class="statistic label">Victoire</span>
+                    <span class="statistic victory">1</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Défaite</span>
+                    <span class="statistic defeat">2</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">P% Victoire</span>
+                    <span class="statistic percent">48 %</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Gain total</span>
+                    <span class="statistic amount-total">1352</span>
+                </li>
+            </ul>
+        </div>
+        <div class="container-player" data-player="3">
+            <span class="player-leave">Quitter</span>
+            <ul class="container-player-bet-option">
+                <li class="player-bet-option unactive"><span>Banker</span></li>
+                <li class="player-bet-option unactive"><span>Player</span></li>
+                <li class="player-bet-option unactive"><span>Tie</span></li>
+            </ul>
+            <ul class="container-player-bet">
+                <li class="player-bet"><input class="input-bet" title="pari" type="number" value=""></li>
+                <li class="player-bet"><span class="amount">45</span></li>
+            </ul>
+            <ul class="container-player-statistics">
+                <li class="player-statistic">
+                    <span class="statistic label">Victoire</span>
+                    <span class="statistic victory">1</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Défaite</span>
+                    <span class="statistic defeat">2</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">P% Victoire</span>
+                    <span class="statistic percent">48 %</span>
+                </li>
+                <li class="player-statistic">
+                    <span class="statistic label">Gain total</span>
+                    <span class="statistic amount-total">1352</span>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 </body>
 </html>

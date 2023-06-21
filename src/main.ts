@@ -12,36 +12,19 @@
 //-----------------------------------------------------debug
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
-import { BetOption } from "./types.js";
+import { BetOption, Bet } from "./types.js";
 
 //init game
 const game = new BaccaratGame();
 
 //new player
 let p1 = new Player("bob");
-let p2 = new Player("John");
-let p3 = new Player("Natoo");
 
 
 //join table
-game.addPlayer(p3, 0);
 game.addPlayer(p1, 2);
-game.addPlayer(p2, 1);
 
 //bet
-
-game.placeBets(
-    [
-        {amount: 10,
-        option: BetOption.Banker},
-        {amount: 50,
-        option: BetOption.Banker},
-        {amount: 20,
-        option: BetOption.Tie},
-        {amount: 0,
-        option: null}
-    ]
-);
 
 console.log("la table vient de parier: ", game.puntos)
 
@@ -54,15 +37,80 @@ console.log("main du joueur: ",game.player);
 //check third draw + result + 
 game.isNatural();
 
-//remove players
-game.removePlayer(0);
+console.log("main du banquier: ",game.banker);
+console.log("main du joueur: ",game.player);
 
-//STEPS
-//init game 
-//tableManagement (init/add/remove players)
-//bets
-//draw + natural
-//result + payout
+console.log("résultat: ",game.result);
+
+//payment
+game.payoutBets();
+console.log("cagnotte du casino: ", game.bankroll);
+console.log("statistics des joueurs à table: ", game.puntos)
 
 
+// PlaceBet Event Listener
+const placeBet = document.getElementById('place-bet');
+placeBet.addEventListener('click', () => {
+    let bets: Bet[] = [];
+    const players = document.querySelectorAll('.container-player');
 
+    console.log("Natoo vient de quitter la table: ", game.puntos)
+    players.forEach((player) => {
+        const betOption: BetOption = player?.querySelector('.active')?.querySelector('span').textContent as BetOption;
+        const betPlayer = parseInt(player?.querySelector('.player-bet')?.querySelector('input').value);
+        const newBet: Bet = {
+            amount : betPlayer,
+            option : betOption
+        }
+        bets.push(newBet);
+    });
+    game.placeBets(bets);
+});
+
+// BetOption Event Listener
+const betOptions = document.querySelectorAll('.player-bet-option');
+betOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+        let containerPlayer = option.closest('.container-player');
+
+        if(containerPlayer) {
+            let siblingOptions = containerPlayer.querySelectorAll('.player-bet-option');
+
+            siblingOptions.forEach((siblingOption) => {
+                siblingOption.classList.remove('active');
+                siblingOption.classList.add('unactive');
+            });
+
+            option.classList.add('active');
+            option.classList.remove('unactive');
+        }
+    });
+});
+
+// RemovePlayer Event Listener
+const removePlayersBtn = document.querySelectorAll('.player-leave');
+removePlayersBtn.forEach((removePlayer) => {
+    removePlayer.addEventListener('click', () => {
+        let containerPlayer = removePlayer.closest('.container-player');
+
+        if(containerPlayer) {
+            game.removePlayer(parseInt(containerPlayer.getAttribute('data-player')));
+
+            // reset BetOptions
+            containerPlayer.querySelectorAll('.player-bet-option').forEach((betOption) => {
+                betOption.classList.remove('active');
+                betOption.classList.add('unactive');
+            });
+
+            containerPlayer.querySelector('.amount').textContent = "-";
+            containerPlayer.querySelector('.amount-total').textContent = "-";
+            containerPlayer.querySelector('.victory').textContent = "-";
+            containerPlayer.querySelector('.defeat').textContent = "-";
+            containerPlayer.querySelector('.percent').textContent = "- %";
+
+
+            //console.log(containerPlayer.querySelector('input-bet').value);
+
+        }
+    });
+});
