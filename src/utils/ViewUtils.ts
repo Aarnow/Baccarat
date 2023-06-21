@@ -1,17 +1,25 @@
 import Player from "../game/player";
 
+// Logs View utils
 export let addLineGameView = (text: string) => {
     let containerGamaManager = document.querySelector('.container-game-manager');
     let line = document.createElement('div');
 
     line.className = 'table-line';
     line.textContent = text;
-    
+
     if(containerGamaManager && containerGamaManager.parentNode){
         containerGamaManager.parentNode.insertBefore(line, containerGamaManager);
     }
 };
+export const deleteAllLogs = () => {
+    const logs = document.querySelectorAll('.table-line');
+    logs.forEach((log) => {
+        log.remove();
+    });
+}
 
+// Player View Utils
 export let updateStatisticsView = (container: Element, player: Player) => {
     const amountElem = container.querySelector('.amount');
     const amountTotalElem = container.querySelector('.amount-total');
@@ -33,11 +41,4 @@ export let updateStatisticsView = (container: Element, player: Player) => {
 
     let input = container.querySelector('.input-bet') as HTMLInputElement;
     input.value = "";
-}
-
-export const deleteAllLogs = () => {
-    const logs = document.querySelectorAll('.container-game-manager');
-    logs.forEach((log) => {
-        log.remove();
-    });
 }

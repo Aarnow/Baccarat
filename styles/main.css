@@ -120,7 +120,7 @@ body {
 }
 .container-game .container-players .container-player .player-leave {
     background-color: red !important;
-    top: 70px !important;
+    top: 90px !important;
 }
 
 .container-game .container-players .container-player .container-player-bet-option {
