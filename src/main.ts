@@ -13,7 +13,7 @@
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
 import { BetOption, Bet } from "./types.js";
-import {addLineGameView, removePlayerView, updateStatisticsView} from "./utils/ViewUtils.js";
+import {addLineGameView, updateStatisticsView} from "./utils/ViewUtils.js";
 
 //init game
 const game = new BaccaratGame();
@@ -31,34 +31,44 @@ console.log("statistics des joueurs à table: ", game.puntos)
 
 // PlaceBet Event Listener
 const placeBet = document.getElementById('place-bet');
-placeBet.addEventListener('click', () => {
+if(placeBet) placeBet.addEventListener('click', () => {
     let bets: Bet[] = [];
     const players = document.querySelectorAll('.container-player');
 
-    players.forEach((player) => {
-        const betOption: BetOption = player?.querySelector('.active')?.querySelector('span').textContent as BetOption;
-        const betPlayer = parseInt(player?.querySelector('.player-bet')?.querySelector('input').value);
-        const newBet: Bet = {
-            amount : betPlayer,
-            option : betOption
-        }
-        bets.push(newBet);
-    });
-    game.placeBets(bets);
-    game.draw();
+    if(players){
+        players.forEach((player) => {
+            const betOptionActiveElem = player.querySelector('.active');
+            const playerBetElem = player.querySelector('.player-bet');
+            if(betOptionActiveElem && playerBetElem){
+                const betOptionElem = betOptionActiveElem.querySelector('span');
+                const playerBet = playerBetElem.querySelector('input') as HTMLInputElement;
 
-    /*game.isNatural();
-    game.payoutBets();
-    console.log("main du banquier: ",game.banker);
-    console.log("main du joueur: ",game.player);
-    console.log("résultat: ",game.result);
-    console.log("cagnotte du casino: ", game.bankroll);
-    console.log("statistics des joueurs à table: ", game.puntos)
-    players.forEach((player) => {
-        updateStatisticsView(player, game.player[parseInt(player.getAttribute('data-seat'))]);
-    });*/
+                if (betOptionElem && playerBet){
+                    const betOption: BetOption = betOptionElem.textContent as BetOption;
+                    const betPlayer = parseInt(playerBet.value);
+                    const newBet: Bet = {
+                        amount : betPlayer,
+                        option : betOption
+                    }
 
+                    bets.push(newBet);
+                }
+            }
+        });
+        game.placeBets(bets);
+        game.draw();
+
+        /*game.isNatural();
+        game.payoutBets();
+        console.log("main du banquier: ",game.banker);
+        console.log("main du joueur: ",game.player);
+        console.log("résultat: ",game.result);
+        console.log("cagnotte du casino: ", game.bankroll);
+        console.log("statistics des joueurs à table: ", game.puntos)*/
+    }
 });
+
+
 
 // BetOption Event Listener
 const betOptions = document.querySelectorAll('.player-bet-option');
@@ -84,17 +94,26 @@ betOptions.forEach((option) => {
 const removePlayersBtn = document.querySelectorAll('.player-leave');
 removePlayersBtn.forEach((removePlayer) => {
     removePlayer.addEventListener('click', () => {
-        let containerPlayer = removePlayer.closest('.container-player');
-        let idSeat = parseInt(containerPlayer.getAttribute('data-seat'));
-        let containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
-        let namePlayer = game.puntos[idSeat].getName();
+        const containerPlayer = removePlayer.closest('.container-player');
 
         if(containerPlayer) {
-            game.removePlayer(idSeat);
-            containerPlayer.classList.add('hide');
-            containerPlayerAdd.classList.remove('hide');
-            containerPlayerAdd.querySelector('.player-name').value = "";
-            addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
+            const dataSeatElem = containerPlayer.getAttribute('data-seat');
+
+            if(dataSeatElem) {
+                const idSeat = parseInt(dataSeatElem);
+                const containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
+
+                if(containerPlayerAdd && game.puntos[idSeat] !== undefined) {
+                    const namePlayer = game.puntos[idSeat].getName();
+                    const playerNameElem = containerPlayerAdd.querySelector('.player-name') as HTMLInputElement;
+
+                    game.removePlayer(idSeat);
+                    containerPlayer.classList.add('hide');
+                    containerPlayerAdd.classList.remove('hide');
+                    playerNameElem.value = "";
+                    addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
+                }
+            }
         }
     });
 });
@@ -103,17 +122,27 @@ removePlayersBtn.forEach((removePlayer) => {
 const addPlayerBtn = document.querySelectorAll('.player-add');
 addPlayerBtn.forEach((addPlayer) => {
    addPlayer.addEventListener('click', () => {
-       let containerPlayerAdd = addPlayer.closest('.container-player-add');
-       let idSeat = parseInt(containerPlayerAdd.getAttribute('data-seat'));
-       let containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
-       let namePlayer = containerPlayerAdd.querySelector('.player-name').value;
+       const containerPlayerAdd = addPlayer.closest('.container-player-add');
 
-       if(containerPlayerAdd && containerPlayer) {
-           game.addPlayer(new Player(namePlayer), idSeat);
-           containerPlayerAdd.classList.add('hide');
-           containerPlayer.classList.remove('hide');
-           containerPlayer.querySelector('span.player-name').textContent = namePlayer;
-           addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
+       if(containerPlayerAdd){
+           const dataSeatElem = containerPlayerAdd.getAttribute('data-seat');
+
+           if(dataSeatElem){
+               const idSeat = parseInt(dataSeatElem);
+               const containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
+
+               if(containerPlayer) {
+                   const namePlayerElem = containerPlayerAdd.querySelector('.player-name') as HTMLInputElement;
+                   const namePlayer = namePlayerElem.value;
+                   const playerNameElem = containerPlayer.querySelector('span.player-name');
+
+                   game.addPlayer(new Player(namePlayer), idSeat);
+                   containerPlayerAdd.classList.add('hide');
+                   containerPlayer.classList.remove('hide');
+                   if(playerNameElem) playerNameElem.textContent = namePlayer;
+                   addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
+               }
+           }
        }
    })
 });

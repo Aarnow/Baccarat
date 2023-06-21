@@ -53,10 +53,15 @@ class BaccaratGame {
         for (let i = 0; i < 2; i++) {
             this.player.addCard(this.deck.dealCard());
             this.banker.addCard(this.deck.dealCard());
-            addLineGameView(
-                "Le joueur tire la carte : " + this.player.getCards()[i].getValue() + " " + this.player.getCards()[i].getSuit() +
-                ", et le banquier tire la carte : " + this.banker.getCards()[i].getValue() + " " + this.banker.getCards()[i].getSuit()
-            );
+
+            const pickPlayerCard = this.player.getCards()[i];
+            const pickBankerCard = this.banker.getCards()[i]
+            if (pickPlayerCard && pickBankerCard){
+                addLineGameView(
+                    "Le joueur tire la carte : " + pickPlayerCard.getValue() + " " + pickPlayerCard.getSuit() +
+                    ", et le banquier tire la carte : " + pickBankerCard.getValue() + " " + pickBankerCard.getSuit()
+                );
+            }
         }
     }
 
