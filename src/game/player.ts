@@ -34,6 +34,10 @@ class Player {
         }
     }
 
+    public getName(): string {
+        return this.name;
+    }
+
     public setAmount(bet: number): void {
         this.amount = bet;
     }

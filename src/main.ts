@@ -13,41 +13,20 @@
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
 import { BetOption, Bet } from "./types.js";
-import {addLineGameView, removePlayerView} from "./utils/ViewUtils.js";
+import {addLineGameView, removePlayerView, updateStatisticsView} from "./utils/ViewUtils.js";
 
 //init game
 const game = new BaccaratGame();
 
-//new player
-let p1 = new Player("bob");
-
-
-//join table
-game.addPlayer(p1, 2);
-
-//bet
-
-console.log("la table vient de parier: ", game.puntos)
-
-//draw
-game.draw();
-
+/*
 console.log("main du banquier: ",game.banker);
 console.log("main du joueur: ",game.player);
-
-//check third draw + result
-game.isNatural();
-
 console.log("main du banquier: ",game.banker);
 console.log("main du joueur: ",game.player);
-
 console.log("résultat: ",game.result);
-
-//payment
-game.payoutBets();
 console.log("cagnotte du casino: ", game.bankroll);
 console.log("statistics des joueurs à table: ", game.puntos)
-
+*/
 
 // PlaceBet Event Listener
 const placeBet = document.getElementById('place-bet');
@@ -55,7 +34,6 @@ placeBet.addEventListener('click', () => {
     let bets: Bet[] = [];
     const players = document.querySelectorAll('.container-player');
 
-    console.log("Natoo vient de quitter la table: ", game.puntos)
     players.forEach((player) => {
         const betOption: BetOption = player?.querySelector('.active')?.querySelector('span').textContent as BetOption;
         const betPlayer = parseInt(player?.querySelector('.player-bet')?.querySelector('input').value);
@@ -66,6 +44,19 @@ placeBet.addEventListener('click', () => {
         bets.push(newBet);
     });
     game.placeBets(bets);
+    game.draw();
+
+    /*game.isNatural();
+    game.payoutBets();
+    console.log("main du banquier: ",game.banker);
+    console.log("main du joueur: ",game.player);
+    console.log("résultat: ",game.result);
+    console.log("cagnotte du casino: ", game.bankroll);
+    console.log("statistics des joueurs à table: ", game.puntos)
+    players.forEach((player) => {
+        updateStatisticsView(player, game.player[parseInt(player.getAttribute('data-seat'))]);
+    });*/
+
 });
 
 // BetOption Event Listener
@@ -93,11 +84,35 @@ const removePlayersBtn = document.querySelectorAll('.player-leave');
 removePlayersBtn.forEach((removePlayer) => {
     removePlayer.addEventListener('click', () => {
         let containerPlayer = removePlayer.closest('.container-player');
+        let idSeat = parseInt(containerPlayer.getAttribute('data-seat'));
+        let containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
+        let namePlayer = game.puntos[idSeat].getName();
 
         if(containerPlayer) {
-            removePlayerView(containerPlayer);
-            game.removePlayer(parseInt(containerPlayer.getAttribute('data-player')));
-            addLineGameView("Le joueur a quitté la partie");
+            game.removePlayer(idSeat);
+            containerPlayer.classList.add('hide');
+            containerPlayerAdd.classList.remove('hide');
+            containerPlayerAdd.querySelector('.player-name').value = "";
+            addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
         }
     });
+});
+
+// AddPlayer Event Listener
+const addPlayerBtn = document.querySelectorAll('.player-add');
+addPlayerBtn.forEach((addPlayer) => {
+   addPlayer.addEventListener('click', () => {
+       let containerPlayerAdd = addPlayer.closest('.container-player-add');
+       let idSeat = parseInt(containerPlayerAdd.getAttribute('data-seat'));
+       let containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
+       let namePlayer = containerPlayerAdd.querySelector('.player-name').value;
+
+       if(containerPlayerAdd && containerPlayer) {
+           game.addPlayer(new Player(namePlayer), idSeat);
+           containerPlayerAdd.classList.add('hide');
+           containerPlayer.classList.remove('hide');
+           containerPlayer.querySelector('span.player-name').textContent = namePlayer;
+           addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
+       }
+   })
 });
