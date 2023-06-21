@@ -14,6 +14,7 @@ import { BaccaratTable, BetOption, Bet } from "../types.js";
 import Player from "./player.js";
 import Deck from "./deck.js"
 import Hand from "./hand.js"
+import {addLineGameView} from "../utils/ViewUtils.js";
 
 class BaccaratGame {
     public puntos: BaccaratTable;
@@ -48,6 +49,34 @@ class BaccaratGame {
         this.puntos[seatNumber] = undefined;
     }
 
+    public draw(): void {
+        for (let i = 0; i < 2; i++) {
+            this.player.addCard(this.deck.dealCard());
+            this.banker.addCard(this.deck.dealCard());
+            addLineGameView(
+                "Le joueur tire la carte : " + this.player.getCards()[i].getValue() + " " + this.player.getCards()[i].getSuit() +
+                ", et le banquier tire la carte : " + this.banker.getCards()[i].getValue() + " " + this.banker.getCards()[i].getSuit()
+            );
+        }
+    }
+
+    public getResult(): BetOption | null {
+        return this.result;
+    }
+
+    public setResult(): void {
+        if (this.player.score > this.banker.score) {
+            this.result = BetOption.Player;
+        } else if (this.player.score < this.banker.score) {
+            this.result = BetOption.Banker;
+        } else {
+            this.result = BetOption.Tie;
+        }
+
+        addLineGameView("Le " + this.result + " remporte la partie.");
+        this.payoutBets();
+    }
+
     public placeBets(bets : Bet[]): void{
         for (const [index, player] of this.puntos.entries()) {
             if(player){
@@ -56,6 +85,7 @@ class BaccaratGame {
                 player.setAmount(bets[index].amount);
             }
         }
+        addLineGameView("Les paris sont fermés.");
     }
 
     public draw(): void {
