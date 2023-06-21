@@ -33,10 +33,6 @@ class BaccaratGame {
         this.bankroll = 0;
     }
 
-    public getResult(): BetOption | null {
-        return this.result;
-    }
-
     public addPlayer(player: Player, seatNumber: number): void {
         if(seatNumber <= 3 && seatNumber >= 0){
             if(!this.puntos[seatNumber]) this.puntos[seatNumber] = player;
@@ -85,7 +81,7 @@ class BaccaratGame {
     public placeBets(bets : Bet[]): void{
         for (const [index, player] of this.puntos.entries()) {
             if(player){
-                const option = bets[index].option
+                const option = bets[index].option;
                 if(option) player.setOption(option);
                 player.setAmount(bets[index].amount);
             }
@@ -93,11 +89,24 @@ class BaccaratGame {
         addLineGameView("Les paris sont fermés.");
     }
 
-    public draw(): void {
-        for (let i = 0; i < 2; i++) {
-            this.player.addCard(this.deck.dealCard());
-            this.banker.addCard(this.deck.dealCard());
+    public payoutBets(): void{
+        for (const player of this.puntos) {
+            if(player){
+                if(this.isBetWon(player)){
+                    this.bankroll -= player.calcPayout();
+                    player.setStatistics(true);
+                } else {
+                    this.bankroll += player.getAmount();
+                    player.setStatistics(false);
+                }
+                //player.resetBet();
+            }
         }
+    }
+
+    public isBetWon(player: Player): boolean {
+        const playerOption = player.getOption();
+        return playerOption === this.result ? true : false;
     }
 
     public isNatural(): void {
@@ -111,6 +120,7 @@ class BaccaratGame {
     public checkPlayerDraw(): void {
         if(this.player.score <= 5){
             this.player.addCard(this.deck.dealCard())
+            addLineGameView("Le score des deux premières cartes du joueur se situe entre 0 et 5, le joueur tire une troisième carte.");
             this.checkBankerDraw()
         } else if(this.banker.score <= 5) {
             this.banker.addCard(this.deck.dealCard())
@@ -125,48 +135,21 @@ class BaccaratGame {
             if(this.banker.score <= 2 || this.banker.score === 3 && thirdPlayerCard !== 8){
                 this.banker.addCard(this.deck.dealCard())
             } else if (thirdPlayerCard <= 7){
-                if ((this.banker.score === 4 && thirdPlayerCard >= 2) ||
-                    (this.banker.score === 5 && thirdPlayerCard >= 4) ||
-                    (this.banker.score === 6 && thirdPlayerCard >= 6)){
-                        this.banker.addCard(this.deck.dealCard())
-                        let log : string = `le banquier à pioche ${this.banker.getCards()[2]}`
-                    }
+                if ((this.banker.score === 4 && thirdPlayerCard >= 2) || (this.banker.score === 5 && thirdPlayerCard >= 4) || (this.banker.score === 6 && thirdPlayerCard >= 6)) {
+                    this.banker.addCard(this.deck.dealCard());
+                    this.banker.score === 4 ?
+                        addLineGameView("Le score du banquier est de 4 et le joueur a tirer une troisième carte entre 2 et 7, le banquier tire une carte.") :
+                        this.banker.score === 5 ?
+                            addLineGameView("Le score du banquier est de 5 et le joueur a tirer une troisième carte entre 4 et 7, le banquier tire une carte.") :
+                            addLineGameView("Le score du banquier est de 6 et le joueur a tirer une troisième carte entre 6 et 7, le banquier tire une carte.");
+                }
             } 
+        } else if(this.banker.score <= 2){
+            this.banker.addCard(this.deck.dealCard())
+            addLineGameView("Le score des deux premières cartes du banquier se situe entre 0 et 2, le banquier tire une troisième carte.")
         }
 
         this.setResult();
-    }
-
-    public setResult(): void {
-        if (this.player.score > this.banker.score) {
-            this.result = BetOption.Player;
-        } else if (this.player.score < this.banker.score) {
-            this.result = BetOption.Banker;
-        } else {
-            this.result = BetOption.Tie;
-        }
-
-        this.payoutBets();
-    }
-
-    public payoutBets(): void{
-        for (const player of this.puntos) {
-            if(player){
-                this.bankroll += player.getAmount();
-                if(this.isBetWon(player)){
-                    this.bankroll -= player.calcPayout();
-                    player.setStatistics(true);
-                } else {
-                    player.setStatistics(false);
-                }
-                player.resetBet();
-            }
-        }
-    }
-
-    public isBetWon(player: Player): boolean {
-        const playerOption = player.getOption();
-        return playerOption === this.result ? true : false;
     }
 }
 

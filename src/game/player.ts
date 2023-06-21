@@ -66,7 +66,7 @@ class Player {
 
     public calcPayout(): number{
         const commission = 0.9; //casino takes 10% on winning bets
-        return (this.option === BetOption.Tie ? this.getAmount() * 8 : this.getAmount() * 2) * commission
+        return Math.floor((this.option === BetOption.Tie ? this.getAmount() * 8 : this.getAmount() * 2) * commission);
     }
 
     public setStatistics(win : boolean): void{

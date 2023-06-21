@@ -13,59 +13,41 @@
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
 import { BetOption, Bet } from "./types.js";
-import {addLineGameView, updateStatisticsView} from "./utils/ViewUtils.js";
+import {addLineGameView, deleteAllLogs, updateStatisticsView} from "./utils/ViewUtils.js";
 
 //init game
 const game = new BaccaratGame();
 
-/*
-console.log("main du banquier: ",game.banker);
-console.log("main du joueur: ",game.player);
-
-console.log("main du banquier: ",game.banker);
-console.log("main du joueur: ",game.player);
-console.log("résultat: ",game.result);
-console.log("cagnotte du casino: ", game.bankroll);
-console.log("statistics des joueurs à table: ", game.puntos)
-*/
-
 // PlaceBet Event Listener
 const placeBet = document.getElementById('place-bet');
-if(placeBet) placeBet.addEventListener('click', () => {
-    let bets: Bet[] = [];
+placeBet?.addEventListener('click', () => {
+    deleteAllLogs();
+    let bets = new Array<Bet>(4);
     const players = document.querySelectorAll('.container-player');
 
-    if(players){
-        players.forEach((player) => {
-            const betOptionActiveElem = player.querySelector('.active');
-            const playerBetElem = player.querySelector('.player-bet');
-            if(betOptionActiveElem && playerBetElem){
-                const betOptionElem = betOptionActiveElem.querySelector('span');
-                const playerBet = playerBetElem.querySelector('input') as HTMLInputElement;
+    players?.forEach((player, index) => {
+        const betOptionActiveElem = player.querySelector('.active');
+        const playerBetElem = player.querySelector('.player-bet');
 
-                if (betOptionElem && playerBet){
-                    const betOption: BetOption = betOptionElem.textContent as BetOption;
-                    const betPlayer = parseInt(playerBet.value);
-                    const newBet: Bet = {
-                        amount : betPlayer,
-                        option : betOption
-                    }
+        if(betOptionActiveElem && playerBetElem){
+            const betOptionElem = betOptionActiveElem.querySelector('span');
+            const playerBet = playerBetElem.querySelector('input') as HTMLInputElement;
 
-                    bets.push(newBet);
+            if (betOptionElem && playerBet){
+                const betOption: BetOption = betOptionElem.textContent as BetOption;
+                const betPlayer = parseInt(playerBet.value);
+                const newBet: Bet = {
+                    amount : betPlayer,
+                    option : betOption
                 }
-            }
-        });
-        game.placeBets(bets);
-        game.draw();
 
-        /*game.isNatural();
-        game.payoutBets();
-        console.log("main du banquier: ",game.banker);
-        console.log("main du joueur: ",game.player);
-        console.log("résultat: ",game.result);
-        console.log("cagnotte du casino: ", game.bankroll);
-        console.log("statistics des joueurs à table: ", game.puntos)*/
-    }
+                bets[index] = newBet;
+            }
+        }
+    });
+
+    game.placeBets(bets);
+    game.draw();
 });
 
 
@@ -75,18 +57,15 @@ const betOptions = document.querySelectorAll('.player-bet-option');
 betOptions.forEach((option) => {
     option.addEventListener('click', () => {
         let containerPlayer = option.closest('.container-player');
+        let siblingOptions = containerPlayer?.querySelectorAll('.player-bet-option');
 
-        if(containerPlayer) {
-            let siblingOptions = containerPlayer.querySelectorAll('.player-bet-option');
+        siblingOptions?.forEach((siblingOption) => {
+            siblingOption.classList.remove('active');
+            siblingOption.classList.add('unactive');
+        });
 
-            siblingOptions.forEach((siblingOption) => {
-                siblingOption.classList.remove('active');
-                siblingOption.classList.add('unactive');
-            });
-
-            option.classList.add('active');
-            option.classList.remove('unactive');
-        }
+        option.classList.add('active');
+        option.classList.remove('unactive');
     });
 });
 
@@ -95,26 +74,22 @@ const removePlayersBtn = document.querySelectorAll('.player-leave');
 removePlayersBtn.forEach((removePlayer) => {
     removePlayer.addEventListener('click', () => {
         const containerPlayer = removePlayer.closest('.container-player');
+        const dataSeatElem = containerPlayer?.getAttribute('data-seat');
 
-        if(containerPlayer) {
-            const dataSeatElem = containerPlayer.getAttribute('data-seat');
+        if(dataSeatElem) {
+            const idSeat = parseInt(dataSeatElem);
+            const containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
+            const namePlayer = game.puntos[idSeat]?.getName();
+            const playerNameElem = containerPlayerAdd?.querySelector('.player-name') as HTMLInputElement;
 
-            if(dataSeatElem) {
-                const idSeat = parseInt(dataSeatElem);
-                const containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
-
-                if(containerPlayerAdd && game.puntos[idSeat] !== undefined) {
-                    const namePlayer = game.puntos[idSeat].getName();
-                    const playerNameElem = containerPlayerAdd.querySelector('.player-name') as HTMLInputElement;
-
-                    game.removePlayer(idSeat);
-                    containerPlayer.classList.add('hide');
-                    containerPlayerAdd.classList.remove('hide');
-                    playerNameElem.value = "";
-                    addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
-                }
-            }
+            game.removePlayer(idSeat);
+            containerPlayer?.classList.add('hide');
+            containerPlayerAdd?.classList.remove('hide');
+            playerNameElem.value = "";
+            addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
         }
+
+        console.log(game.puntos, 'Retrait d\'un joueur');
     });
 });
 
@@ -123,26 +98,23 @@ const addPlayerBtn = document.querySelectorAll('.player-add');
 addPlayerBtn.forEach((addPlayer) => {
    addPlayer.addEventListener('click', () => {
        const containerPlayerAdd = addPlayer.closest('.container-player-add');
+       const dataSeatElem = containerPlayerAdd?.getAttribute('data-seat');
 
-       if(containerPlayerAdd){
-           const dataSeatElem = containerPlayerAdd.getAttribute('data-seat');
+       if(dataSeatElem){
+           const idSeat = parseInt(dataSeatElem);
+           const containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
 
-           if(dataSeatElem){
-               const idSeat = parseInt(dataSeatElem);
-               const containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
+           const namePlayerElem = containerPlayerAdd?.querySelector('.player-name') as HTMLInputElement;
+           const namePlayer = namePlayerElem.value;
+           const playerNameElem = containerPlayer?.querySelector('span.player-name');
 
-               if(containerPlayer) {
-                   const namePlayerElem = containerPlayerAdd.querySelector('.player-name') as HTMLInputElement;
-                   const namePlayer = namePlayerElem.value;
-                   const playerNameElem = containerPlayer.querySelector('span.player-name');
-
-                   game.addPlayer(new Player(namePlayer), idSeat);
-                   containerPlayerAdd.classList.add('hide');
-                   containerPlayer.classList.remove('hide');
-                   if(playerNameElem) playerNameElem.textContent = namePlayer;
-                   addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
-               }
-           }
+           game.addPlayer(new Player(namePlayer), idSeat);
+           containerPlayerAdd?.classList.add('hide');
+           containerPlayer?.classList.remove('hide');
+           if(playerNameElem) playerNameElem.textContent = namePlayer;
+           addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
        }
-   })
+
+       console.log(game.puntos, 'Ajout d\'un joueur');
+   });
 });
