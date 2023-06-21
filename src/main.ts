@@ -13,6 +13,7 @@
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
 import { BetOption, Bet } from "./types.js";
+import {addLineGameView, removePlayerView} from "./utils/ViewUtils.js";
 
 //init game
 const game = new BaccaratGame();
@@ -94,23 +95,9 @@ removePlayersBtn.forEach((removePlayer) => {
         let containerPlayer = removePlayer.closest('.container-player');
 
         if(containerPlayer) {
+            removePlayerView(containerPlayer);
             game.removePlayer(parseInt(containerPlayer.getAttribute('data-player')));
-
-            // reset BetOptions
-            containerPlayer.querySelectorAll('.player-bet-option').forEach((betOption) => {
-                betOption.classList.remove('active');
-                betOption.classList.add('unactive');
-            });
-
-            containerPlayer.querySelector('.amount').textContent = "-";
-            containerPlayer.querySelector('.amount-total').textContent = "-";
-            containerPlayer.querySelector('.victory').textContent = "-";
-            containerPlayer.querySelector('.defeat').textContent = "-";
-            containerPlayer.querySelector('.percent').textContent = "- %";
-
-
-            //console.log(containerPlayer.querySelector('input-bet').value);
-
+            addLineGameView("Le joueur a quitté la partie");
         }
     });
 });
