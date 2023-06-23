@@ -14,7 +14,7 @@ import { BaccaratTable, BetOption, Bet } from "../types.js";
 import Player from "./player.js";
 import Deck from "./deck.js"
 import Hand from "./hand.js"
-import {addLineGameView} from "../utils/ViewUtils.js";
+import {addLineGameCopyClipboard, addLineGameView} from "../utils/ViewUtils.js";
 
 class BaccaratGame {
     public puntos: BaccaratTable;
@@ -54,11 +54,12 @@ class BaccaratGame {
             const pickBankerCard = this.banker.getCards()[i]
             if (pickPlayerCard && pickBankerCard){
                 addLineGameView(
-                    "Le joueur tire la carte : " + pickPlayerCard.getValue() + " " + pickPlayerCard.getSuit() +
-                    ", et le banquier tire la carte : " + pickBankerCard.getValue() + " " + pickBankerCard.getSuit()
+                    "Le joueur tire la carte : " + pickPlayerCard.getName() + " " + pickPlayerCard.getSuit() +
+                    ", et le banquier tire la carte : " + pickBankerCard.getName() + " " + pickBankerCard.getSuit()
                 );
             }
         }
+        addLineGameCopyClipboard(this.player, this.banker);
     }
 
     public getResult(): BetOption | null {
@@ -73,7 +74,6 @@ class BaccaratGame {
         } else {
             this.result = BetOption.Tie;
         }
-
         addLineGameView("Le " + this.result + " remporte la partie.");
         this.payoutBets();
     }
@@ -99,9 +99,11 @@ class BaccaratGame {
                     this.bankroll += player.getAmount();
                     player.setStatistics(false);
                 }
-                //player.resetBet();
+                player.resetBet();
             }
         }
+        this.player.clearHand();
+        this.banker.clearHand();
     }
 
     public isBetWon(player: Player): boolean {
@@ -121,9 +123,13 @@ class BaccaratGame {
         if(this.player.score <= 5){
             this.player.addCard(this.deck.dealCard())
             addLineGameView("Le score des deux premières cartes du joueur se situe entre 0 et 5, le joueur tire une troisième carte.");
+            addLineGameView("Le joueur tire une carte : " + this.player.getCards()[2].getName());
+            addLineGameCopyClipboard(this.player, this.banker);
             this.checkBankerDraw()
         } else if(this.banker.score <= 5) {
             this.banker.addCard(this.deck.dealCard())
+            addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2].getName());
+            addLineGameCopyClipboard(this.player, this.banker);
             this.setResult();
         } else this.setResult();      
     }
@@ -134,6 +140,8 @@ class BaccaratGame {
         if(thirdPlayerCard){
             if(this.banker.score <= 2 || this.banker.score === 3 && thirdPlayerCard !== 8){
                 this.banker.addCard(this.deck.dealCard())
+                addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2].getName());
+                addLineGameCopyClipboard(this.player, this.banker);
             } else if (thirdPlayerCard <= 7){
                 if ((this.banker.score === 4 && thirdPlayerCard >= 2) || (this.banker.score === 5 && thirdPlayerCard >= 4) || (this.banker.score === 6 && thirdPlayerCard >= 6)) {
                     this.banker.addCard(this.deck.dealCard());
@@ -142,11 +150,15 @@ class BaccaratGame {
                         this.banker.score === 5 ?
                             addLineGameView("Le score du banquier est de 5 et le joueur a tirer une troisième carte entre 4 et 7, le banquier tire une carte.") :
                             addLineGameView("Le score du banquier est de 6 et le joueur a tirer une troisième carte entre 6 et 7, le banquier tire une carte.");
+                    addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2].getName());
+                    addLineGameCopyClipboard(this.player, this.banker);
                 }
             } 
         } else if(this.banker.score <= 2){
             this.banker.addCard(this.deck.dealCard())
             addLineGameView("Le score des deux premières cartes du banquier se situe entre 0 et 2, le banquier tire une troisième carte.")
+            addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2].getName());
+            addLineGameCopyClipboard(this.player, this.banker);
         }
 
         this.setResult();
