@@ -48,6 +48,7 @@ placeBet?.addEventListener('click', () => {
 
     game.placeBets(bets);
     game.draw();
+    game.isNatural();
 });
 
 
