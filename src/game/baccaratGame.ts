@@ -120,17 +120,16 @@ class BaccaratGame {
     }
 
     public checkPlayerDraw(): void {
-        let thirdPlayerCard = this.player.getCards()[2];
 
         if(this.player.score <= 5){
             this.player.addCard(this.deck.dealCard())
             addLineGameView("Le score des deux premières cartes du joueur se situe entre 0 et 5, le joueur tire une troisième carte.");
-            addLineGameView("Le joueur tire une carte : " + thirdPlayerCard?.getName());
+            addLineGameView("Le joueur tire une carte : " + this.player.getCards()[2]?.getName());
             addLineGameCopyClipboard(this.player, this.banker);
             this.checkBankerDraw()
         } else if(this.banker.score <= 5) {
             this.banker.addCard(this.deck.dealCard())
-            addLineGameView("Le banquier tire une carte : " + thirdPlayerCard?.getName());
+            addLineGameView("Le banquier tire une carte : " + this.player.getCards()[2]?.getName());
             addLineGameCopyClipboard(this.player, this.banker);
             this.setResult();
         } else this.setResult();      
@@ -138,14 +137,11 @@ class BaccaratGame {
 
     public checkBankerDraw(): void{
         const thirdPlayerCardValue = this.player.getCards()[2]?.getValue();
-        const bankerCards = this.banker.getCards();
-        const thirdBankerCard = this.banker.cards[2]
-        console.log(this.banker.cards)
-        console.log("testtt", thirdBankerCard)
+        
         if(thirdPlayerCardValue){
             if(this.banker.score <= 2 || this.banker.score === 3 && thirdPlayerCardValue !== 8){
                 this.banker.addCard(this.deck.dealCard())
-                addLineGameView("Le banquier tire une carte : " + thirdBankerCard?.getName());
+                addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2]?.getName());
                 addLineGameCopyClipboard(this.player, this.banker);
             } else if (thirdPlayerCardValue <= 7){
                 if ((this.banker.score === 4 && thirdPlayerCardValue >= 2) || (this.banker.score === 5 && thirdPlayerCardValue >= 4) || (this.banker.score === 6 && thirdPlayerCardValue >= 6)) {
@@ -155,14 +151,14 @@ class BaccaratGame {
                         this.banker.score === 5 ?
                             addLineGameView("Le score du banquier est de 5 et le joueur a tirer une troisième carte entre 4 et 7, le banquier tire une carte.") :
                             addLineGameView("Le score du banquier est de 6 et le joueur a tirer une troisième carte entre 6 et 7, le banquier tire une carte.");
-                    addLineGameView("Le banquier tire une carte : " + thirdBankerCard?.getName());
+                    addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2]?.getName());
                     addLineGameCopyClipboard(this.player, this.banker);
                 }
             } 
         } else if(this.banker.score <= 2){
             this.banker.addCard(this.deck.dealCard())
             addLineGameView("Le score des deux premières cartes du banquier se situe entre 0 et 2, le banquier tire une troisième carte.")
-            addLineGameView("Le banquier tire une carte : " + thirdBankerCard?.getName());
+            addLineGameView("Le banquier tire une carte : " + this.banker.getCards()[2]?.getName());
             addLineGameCopyClipboard(this.player, this.banker);
         }
 
