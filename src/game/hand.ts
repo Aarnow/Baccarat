@@ -13,7 +13,7 @@ import Card from "./card.js"
 import { CardTuple } from "../types.js"
 
 class Hand {
-    private cards: CardTuple;
+    public cards: CardTuple;
     public score: number;
 
     constructor(){

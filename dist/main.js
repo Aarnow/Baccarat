@@ -8,42 +8,90 @@
 //-----------------------------------------------------debug
 import BaccaratGame from "./game/baccaratGame.js";
 import Player from "./game/player.js";
-import { BetOption } from "./types.js";
+import { addLineGameView, deleteAllLogs } from "./utils/ViewUtils.js";
 //init game
 const game = new BaccaratGame();
-//new player
-let p1 = new Player("bob");
-let p2 = new Player("John");
-let p3 = new Player("Natoo");
-//join table
-game.addPlayer(p3, 0);
-game.addPlayer(p1, 2);
-game.addPlayer(p2, 1);
-//bet
-game.placeBets([
-    { amount: 10,
-        option: BetOption.Banker },
-    { amount: 50,
-        option: BetOption.Banker },
-    { amount: 20,
-        option: BetOption.Tie },
-    { amount: 0,
-        option: null }
-]);
-console.log("la table vient de parier: ", game.puntos);
-//draw
-game.draw();
-console.log("main du banquier: ", game.banker);
-console.log("main du joueur: ", game.player);
-//check third draw + result + 
-game.isNatural();
-console.log("main du banquier: ", game.banker);
-console.log("main du joueur: ", game.player);
-console.log("résultat: ", game.result);
-//payment
-game.payoutBets();
-console.log("cagnotte du casino: ", game.bankroll);
-console.log("statistics des joueurs à table: ", game.puntos);
-//remove players
-game.removePlayer(0);
-console.log("Natoo vient de quitter la table: ", game.puntos);
+// PlaceBet Event Listener
+const placeBet = document.getElementById('place-bet');
+placeBet === null || placeBet === void 0 ? void 0 : placeBet.addEventListener('click', () => {
+    deleteAllLogs();
+    let bets = new Array(4);
+    const players = document.querySelectorAll('.container-player');
+    players === null || players === void 0 ? void 0 : players.forEach((player, index) => {
+        const betOptionActiveElem = player.querySelector('.active');
+        const playerBetElem = player.querySelector('.player-bet');
+        if (betOptionActiveElem && playerBetElem) {
+            const betOptionElem = betOptionActiveElem.querySelector('span');
+            const playerBet = playerBetElem.querySelector('input');
+            if (betOptionElem && playerBet) {
+                const betOption = betOptionElem.textContent;
+                const betPlayer = parseInt(playerBet.value);
+                const newBet = {
+                    amount: betPlayer,
+                    option: betOption
+                };
+                bets[index] = newBet;
+            }
+        }
+    });
+    game.placeBets(bets);
+    game.draw();
+    game.isNatural();
+});
+// BetOption Event Listener
+const betOptions = document.querySelectorAll('.player-bet-option');
+betOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+        let containerPlayer = option.closest('.container-player');
+        let siblingOptions = containerPlayer === null || containerPlayer === void 0 ? void 0 : containerPlayer.querySelectorAll('.player-bet-option');
+        siblingOptions === null || siblingOptions === void 0 ? void 0 : siblingOptions.forEach((siblingOption) => {
+            siblingOption.classList.remove('active');
+            siblingOption.classList.add('unactive');
+        });
+        option.classList.add('active');
+        option.classList.remove('unactive');
+    });
+});
+// RemovePlayer Event Listener
+const removePlayersBtn = document.querySelectorAll('.player-leave');
+removePlayersBtn.forEach((removePlayer) => {
+    removePlayer.addEventListener('click', () => {
+        var _a;
+        const containerPlayer = removePlayer.closest('.container-player');
+        const dataSeatElem = containerPlayer === null || containerPlayer === void 0 ? void 0 : containerPlayer.getAttribute('data-seat');
+        if (dataSeatElem) {
+            const idSeat = parseInt(dataSeatElem);
+            const containerPlayerAdd = document.querySelector('.container-player-add[data-seat="' + idSeat + '"]');
+            const namePlayer = (_a = game.puntos[idSeat]) === null || _a === void 0 ? void 0 : _a.getName();
+            const playerNameElem = containerPlayerAdd === null || containerPlayerAdd === void 0 ? void 0 : containerPlayerAdd.querySelector('.player-name');
+            game.removePlayer(idSeat);
+            containerPlayer === null || containerPlayer === void 0 ? void 0 : containerPlayer.classList.add('hide');
+            containerPlayerAdd === null || containerPlayerAdd === void 0 ? void 0 : containerPlayerAdd.classList.remove('hide');
+            playerNameElem.value = "";
+            addLineGameView("Le joueur " + namePlayer + " a quitté la partie.");
+        }
+        console.log(game.puntos, 'Retrait d\'un joueur');
+    });
+});
+// AddPlayer Event Listener
+const addPlayerBtn = document.querySelectorAll('.player-add');
+addPlayerBtn.forEach((addPlayer) => {
+    addPlayer.addEventListener('click', () => {
+        const containerPlayerAdd = addPlayer.closest('.container-player-add');
+        const dataSeatElem = containerPlayerAdd === null || containerPlayerAdd === void 0 ? void 0 : containerPlayerAdd.getAttribute('data-seat');
+        if (dataSeatElem) {
+            const idSeat = parseInt(dataSeatElem);
+            const containerPlayer = document.querySelector('.container-player[data-seat="' + idSeat + '"]');
+            const namePlayerElem = containerPlayerAdd === null || containerPlayerAdd === void 0 ? void 0 : containerPlayerAdd.querySelector('.player-name');
+            const namePlayer = namePlayerElem.value;
+            const playerNameElem = containerPlayer === null || containerPlayer === void 0 ? void 0 : containerPlayer.querySelector('span.player-name');
+            game.addPlayer(new Player(namePlayer), idSeat);
+            containerPlayerAdd === null || containerPlayerAdd === void 0 ? void 0 : containerPlayerAdd.classList.add('hide');
+            containerPlayer === null || containerPlayer === void 0 ? void 0 : containerPlayer.classList.remove('hide');
+            if (playerNameElem)
+                playerNameElem.textContent = namePlayer;
+            addLineGameView("Le joueur " + namePlayer + " a rejoint la partie.");
+        }
+        console.log(game.puntos, 'Ajout d\'un joueur');
+    });
+});

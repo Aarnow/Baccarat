@@ -16,6 +16,9 @@ class Card {
     getValue() {
         return Object.values(this.value)[0];
     }
+    getName() {
+        return Object.keys(this.value)[0];
+    }
     getSuit() {
         return this.suit;
     }

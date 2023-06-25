@@ -111,15 +111,12 @@ export const addLineGameCopyClipboard = (playerCards: Hand, bankerCards: Hand) =
 }
 
 export const copyClipboard = (div: Element) => {
-    const toCopy = div.parentNode.querySelector('.copyText');
-    div.innerText = "Copied !";
+    const toCopy = div.parentNode?.querySelector('.copyText');
+    div.textContent = "Copied !";
     setTimeout(() => {
-        div.innerText = "Copy"
+        div.textContent = "Copy"
     }, 1000);
-
-    console.log(toCopy?.innerText, 'toCopy.innerText');
-
-    navigator.clipboard.writeText(toCopy?.innerText);
+    navigator.clipboard.writeText((toCopy as HTMLElement).innerText);
 }
 
 // Player View Utils

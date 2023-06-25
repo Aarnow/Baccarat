@@ -25,6 +25,9 @@ class Player {
             earning: 0
         };
     }
+    getName() {
+        return this.name;
+    }
     setAmount(bet) {
         this.amount = bet;
     }
@@ -46,7 +49,7 @@ class Player {
     }
     calcPayout() {
         const commission = 0.9; //casino takes 10% on winning bets
-        return (this.option === BetOption.Tie ? this.getAmount() * 8 : this.getAmount() * 2) * commission;
+        return Math.floor((this.option === BetOption.Tie ? this.getAmount() * 8 : this.getAmount() * 2) * commission);
     }
     setStatistics(win) {
         let wins = win ? this.statistics.wins + 1 : this.statistics.wins;
